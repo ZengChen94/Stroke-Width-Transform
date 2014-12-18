@@ -1,36 +1,112 @@
 function [paper, width_img] = adjustCorner(paper, gradx, grady, i, j, a, b, cannyResult, width_img)
-        flag = 0;
+    flag = 0;
     top = 1;
     stack{top} = [i, j];
     width = 0;
+    
+    %%
     if abs(gradx(i, j)) >= abs(grady(i, j))
-%     if gradx(i, j) == 0 %gradx == 0
         if abs(gradx(i, j)) < 10 %we treat it as gradx == 0
             if grady(i, j) > 0 && i ~= a 
                 for temp = (i + 1) : 1 : a
                     top = top + 1;
                     stack{top} = [temp, j];
                     if cannyResult(temp, j) < 200
-%                     if gradx(temp, j) == 0 
-                            if grady(temp, j) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
+                        if grady(temp, j) <= 0
+                            width = temp - i;
+                            top = top + 1;
+                            stack{top} = [temp, j];
+                            flag = 1;
+                            break;
+                        end
+                    end
+                    if temp > 1
+                        if cannyResult(temp-1, j) < 200
+                            if grady(temp-1, j) <= 0
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
                                 break;
                             end
-%                     else
-%                         alpha = atan2(grady(temp, j), gradx(temp, j));
-%                         if alpha > pi/6 && alpha < pi*5/6
-%                             paper=BresenhamDraw(paper,j,i,j,temp);
-%                             width = temp - i;
-%                             top = top + 1;
-%                             stack{top} = [temp, j];
-%                             flag = 1;
-%                             break;
-%                         end
-%                     end
+                        end
+                    end
+                    if j > 1
+                        if cannyResult(temp, j-1) < 200
+                            if grady(temp, j-1) <= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp < a
+                        if cannyResult(temp+1, j) < 200
+                            if grady(temp+1, j) <= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if j < b
+                        if cannyResult(temp, j+1) < 200
+                            if grady(temp, j+1) <= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp > 1 && j > 1
+                        if cannyResult(temp-1, j-1) < 200
+                            if grady(temp-1, j-1) <= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp < a && j < b
+                        if cannyResult(temp+1, j+1) < 200
+                            if grady(temp+1, j+1) <= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp > 1 && j < b
+                        if cannyResult(temp-1, j+1) < 200
+                            if grady(temp-1, j+1) <= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp < a && j > 1
+                        if cannyResult(temp+1, j-1) < 200
+                            if grady(temp+1, j-1) <= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
                     end
                 end
             elseif grady(i, j) < 0 && i ~= 1
@@ -38,30 +114,107 @@ function [paper, width_img] = adjustCorner(paper, gradx, grady, i, j, a, b, cann
                     top = top + 1;
                     stack{top} = [temp, j];
                     if cannyResult(temp, j) < 200
-%                     if gradx(temp, j) == 0 
-                            if grady(temp, j) >= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = i - temp;
+                        if grady(temp, j) >= 0
+                            width = i - temp;
+                            top = top + 1;
+                            stack{top} = [temp, j];
+                            flag = 1;
+                            break;
+                        end
+                    end
+                    if temp > 1
+                        if cannyResult(temp-1, j) < 200
+                            if grady(temp-1, j) >= 0
+                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
                                 break;
                             end
-%                     else
-%                         alpha = atan2(grady(temp, j), gradx(temp, j));
-%                         if alpha < -pi/6 && alpha > -pi*5/6
-%                             paper=BresenhamDraw(paper,j,i,j,temp);
-%                             width = i - temp;
-%                             top = top + 1;
-%                             stack{top} = [temp, j];
-%                             flag = 1;
-%                             break;
-%                         end
-%                     end
+                        end
+                    end
+                    if j > 1
+                        if cannyResult(temp, j-1) < 200
+                            if grady(temp, j-1) >= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp < a
+                        if cannyResult(temp+1, j) < 200
+                            if grady(temp+1, j) >= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if j < b
+                        if cannyResult(temp, j+1) < 200
+                            if grady(temp, j+1) >= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp > 1 && j > 1
+                        if cannyResult(temp-1, j-1) < 200
+                            if grady(temp-1, j-1) >= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp < a && j < b
+                        if cannyResult(temp+1, j+1) < 200
+                            if grady(temp+1, j+1) >= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp > 1 && j < b
+                        if cannyResult(temp-1, j+1) < 200
+                            if grady(temp-1, j+1) >= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp < a && j > 1
+                        if cannyResult(temp+1, j-1) < 200
+                            if grady(temp+1, j-1) >= 0
+                                width = temp - i;
+                                top = top + 1;
+                                stack{top} = [temp, j];
+                                flag = 1;
+                                break;
+                            end
+                        end
                     end
                 end
             end
-        else
+        end %%
+%         elseif gradx(i, j) ~= 0
+        if gradx(i, j) ~= 0%%
             if gradx(i, j) > 0 && j ~= b
                for temp_x = (j + 1) : 1 : b
                    temp_y = round(i + (temp_x - j) * grady(i, j) / gradx(i, j)); 
@@ -74,12 +227,107 @@ function [paper, width_img] = adjustCorner(paper, gradx, grady, i, j, a, b, cann
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
  %                    if alpha < pi/3
                        if alpha < pi/2
-                           paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                            width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
                            flag = 1;
                            break;
+                       end
+                   end
+                   if temp_y > 1
+                       if cannyResult(temp_y-1, temp_x) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_y < a
+                       if cannyResult(temp_y+1, temp_x) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x > 1
+                       if cannyResult(temp_y, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x < b
+                       if cannyResult(temp_y, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x > 1 && temp_y >1
+                       if cannyResult(temp_y-1, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x <b && temp_y <a
+                       if cannyResult(temp_y+1, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x >1 && temp_y <a
+                       if cannyResult(temp_y+1, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x <b && temp_y >1
+                       if cannyResult(temp_y-1, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
                        end
                    end
                end
@@ -95,7 +343,6 @@ function [paper, width_img] = adjustCorner(paper, gradx, grady, i, j, a, b, cann
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
  %                    if alpha < pi/3
                        if alpha < pi/2
-                           paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                            width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
@@ -103,68 +350,317 @@ function [paper, width_img] = adjustCorner(paper, gradx, grady, i, j, a, b, cann
                            break;
                        end
                    end
+                   if temp_y > 1
+                       if cannyResult(temp_y-1, temp_x) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_y < a
+                       if cannyResult(temp_y+1, temp_x) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x > 1
+                       if cannyResult(temp_y, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x < b
+                       if cannyResult(temp_y, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x > 1 && temp_y >1
+                       if cannyResult(temp_y-1, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x <b && temp_y <a
+                       if cannyResult(temp_y+1, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x >1 && temp_y <a
+                       if cannyResult(temp_y+1, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x <b && temp_y >1
+                       if cannyResult(temp_y-1, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
                end
             end
         end
-    else
-        %     if grady(i, j) == 0 %grady == 0
+%%
+    else 
         if abs(grady(i, j)) < 10 %we treat it as grady == 0
             if gradx(i, j) > 0 && j ~= b
                 for temp = (j + 1) : 1 : b
                     top = top + 1;
                     stack{top} = [i, temp];
                     if cannyResult(i, temp) < 200
-%                     if grady(i, temp) == 0 
-                            if gradx(i, temp) <= 0
-                                paper=BresenhamDraw(paper,j,i,temp,i);
-                                width = temp - j;
-                                top = top + 1;
-                                stack{top} = [i, temp];
-                                flag = 1;
-                                break;
-                            end
-%                     else
-%                         alpha = atan2(grady(i, temp), gradx(i, temp));
-%                         if alpha > pi/6 && alpha < pi*5/6
-%                             paper=BresenhamDraw(paper,j,i,temp,i);
-%                             width = temp - j;
-%                             top = top + 1;
-%                             stack{top} = [i, temp];
-%                             flag = 1;
-%                             break;
-%                         end
-%                     end
+                        if gradx(i, temp) <= 0
+                            width = temp - j;
+                            top = top + 1;
+                            stack{top} = [i, temp];
+                            flag = 1;
+                            break;
+                        end
                     end
-                end
-            elseif gradx(i, j) < 0 && j ~= 1
-                for temp = (j - 1) : -1 : 1 
-                    top = top + 1;
-                    stack{top} = [i, temp];
-                    if cannyResult(i, temp) < 200
-%                     if grady(i, temp) == 0 
-                            if grady(i, temp) >= 0
-                                paper=BresenhamDraw(paper,j,i,temp,i);
+                    if temp > 1
+                        if cannyResult(i, temp-1) < 200
+                            if grady(i, temp-1) <= 0
                                 width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
-%                     else
-%                         alpha = atan2(grady(i, temp), gradx(i, temp));
-%                         if alpha < -pi/6 && alpha > -pi*5/6
-%                             paper=BresenhamDraw(paper,j,i,temp,i);
-%                             width = j - temp;
-%                             top = top + 1;
-%                             stack{top} = [i, temp];
-%                             flag = 1;
-%                             break;
-%                         end
-%                     end
+                        end
+                    end
+                    if i > 1
+                        if cannyResult(i-1, temp) < 200
+                            if grady(i-1, temp) <= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp < b
+                        if cannyResult(i, temp+1) < 200
+                            if grady(i, temp+1) <= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if i < a
+                        if cannyResult(i+1, temp) < 200
+                            if grady(i+1, temp) <= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp > 1 && i > 1
+                        if cannyResult(i-1, temp-1) < 200
+                            if grady(i-1, temp-1) <= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if i < a && temp < b
+                        if cannyResult(i+1, temp+1) < 200
+                            if grady(i+1, temp+1) <= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp > 1 && i < a
+                        if cannyResult(i+1, temp-1) < 200
+                            if grady(i+1, temp-1) <= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp < b && i > 1
+                        if cannyResult(i-1, temp+1) < 200
+                            if grady(i-1, temp+1) <= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                end
+            elseif gradx(i, j) < 0 && j ~= 1
+                for temp = (j - 1) : -1 : 1 
+                    top = top + 1;
+                    stack{top} = [i, temp];
+                    
+                    if cannyResult(i, temp) < 200
+                        if grady(i, temp) >= 0
+                            width = j - temp;
+                            top = top + 1;
+                            stack{top} = [i, temp];
+                            flag = 1;
+                            break;
+                        end
+                    end
+                    if temp > 1
+                        if cannyResult(i, temp-1) < 200
+                            if grady(i, temp-1) >= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if i > 1
+                        if cannyResult(i-1, temp) < 200
+                            if grady(i-1, temp) >= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp < b
+                        if cannyResult(i, temp+1) < 200
+                            if grady(i, temp+1) >= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if i < a
+                        if cannyResult(i+1, temp) < 200
+                            if grady(i+1, temp) >= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp > 1 && i > 1
+                        if cannyResult(i-1, temp-1) < 200
+                            if grady(i-1, temp-1) >= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if i < a && temp < b
+                        if cannyResult(i+1, temp+1) < 200
+                            if grady(i+1, temp+1) >= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp > 1 && i < a
+                        if cannyResult(i+1, temp-1) < 200
+                            if grady(i+1, temp-1) >= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
+                    end
+                    if temp < b && i > 1
+                        if cannyResult(i-1, temp+1) < 200
+                            if grady(i-1, temp+1) >= 0
+                                width = j - temp;
+                                top = top + 1;
+                                stack{top} = [i, temp];
+                                flag = 1;
+                                break;
+                            end
+                        end
                     end
                 end
             end
-        else
+        end
+%         elseif grady(i, j) ~= 0
+        if grady(i, j) ~= 0
             if grady(i, j) > 0 && i ~= a
                for temp_y = (i + 1) : 1 : a
                    temp_x = round(j + (temp_y - i) * gradx(i, j) / grady(i, j)); 
@@ -177,12 +673,107 @@ function [paper, width_img] = adjustCorner(paper, gradx, grady, i, j, a, b, cann
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
  %                    if alpha < pi/3
                        if alpha < pi/2
-                           paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                            width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
                            flag = 1;
                            break;
+                       end
+                   end
+                   if temp_y > 1
+                       if cannyResult(temp_y-1, temp_x) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_y < a
+                       if cannyResult(temp_y+1, temp_x) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x > 1
+                       if cannyResult(temp_y, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x < b
+                       if cannyResult(temp_y, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x > 1 && temp_y >1
+                       if cannyResult(temp_y-1, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x <b && temp_y <a
+                       if cannyResult(temp_y+1, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x >1 && temp_y <a
+                       if cannyResult(temp_y+1, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x <b && temp_y >1
+                       if cannyResult(temp_y-1, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
                        end
                    end
                end
@@ -198,7 +789,6 @@ function [paper, width_img] = adjustCorner(paper, gradx, grady, i, j, a, b, cann
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
  %                    if alpha < pi/3
                        if alpha < pi/2
-                           paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                            width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
@@ -206,10 +796,107 @@ function [paper, width_img] = adjustCorner(paper, gradx, grady, i, j, a, b, cann
                            break;
                        end
                    end
+                   if temp_y > 1
+                       if cannyResult(temp_y-1, temp_x) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_y < a
+                       if cannyResult(temp_y+1, temp_x) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x > 1
+                       if cannyResult(temp_y, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x < b
+                       if cannyResult(temp_y, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x > 1 && temp_y >1
+                       if cannyResult(temp_y-1, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x <b && temp_y <a
+                       if cannyResult(temp_y+1, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x >1 && temp_y <a
+                       if cannyResult(temp_y+1, temp_x-1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
+                   if temp_x <b && temp_y >1
+                       if cannyResult(temp_y-1, temp_x+1) < 200
+                           alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
+                           if alpha < pi/2
+                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
+                               top = top + 1;
+                               stack{top} = [temp_y, temp_x];
+                               flag = 1;
+                               break;
+                           end
+                       end
+                   end
                end
             end
         end
     end
+    
     if flag == 1
         tot = 0;
         for temp = 1: 1: top

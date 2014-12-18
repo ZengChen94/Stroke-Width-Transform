@@ -1,4 +1,4 @@
-function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyResult, width_img)
+function width_img = getWidth(gradx, grady, i, j, a, b, cannyResult, width_img)
     flag = 0;
     top = 1;
     stack{top} = [i, j];
@@ -12,7 +12,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     stack{top} = [temp, j];
                     if cannyResult(temp, j) < 200
                         if grady(temp, j) <= 0
-                            paper=BresenhamDraw(paper,j,i,j,temp);
                             width = temp - i;
                             top = top + 1;
                             stack{top} = [temp, j];
@@ -23,7 +22,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     if temp > 1
                         if cannyResult(temp-1, j) < 200
                             if grady(temp-1, j) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -35,7 +33,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     if j > 1
                         if cannyResult(temp, j-1) < 200
                             if grady(temp, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -47,7 +44,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     if temp < a
                         if cannyResult(temp+1, j) < 200
                             if grady(temp+1, j) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -59,7 +55,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     if j < b
                         if cannyResult(temp, j+1) < 200
                             if grady(temp, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -71,7 +66,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     if temp > 1 && j > 1
                         if cannyResult(temp-1, j-1) < 200
                             if grady(temp-1, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -83,7 +77,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     if temp < a && j < b
                         if cannyResult(temp+1, j+1) < 200
                             if grady(temp+1, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -95,7 +88,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     if temp > 1 && j < b
                         if cannyResult(temp-1, j+1) < 200
                             if grady(temp-1, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -107,7 +99,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     if temp < a && j > 1
                         if cannyResult(temp+1, j-1) < 200
                             if grady(temp+1, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -123,7 +114,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     stack{top} = [temp, j];
                     if cannyResult(temp, j) < 200
                         if grady(temp, j) >= 0
-                            paper=BresenhamDraw(paper,j,i,j,temp);
                             width = i - temp;
                             top = top + 1;
                             stack{top} = [temp, j];
@@ -133,8 +123,7 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     end
                     if temp > 1
                         if cannyResult(temp-1, j) < 200
-                            if grady(temp-1, j) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
+                            if grady(temp-1, j) >= 0
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -145,8 +134,7 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     end
                     if j > 1
                         if cannyResult(temp, j-1) < 200
-                            if grady(temp, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
+                            if grady(temp, j-1) >= 0
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -157,8 +145,7 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     end
                     if temp < a
                         if cannyResult(temp+1, j) < 200
-                            if grady(temp+1, j) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
+                            if grady(temp+1, j) >= 0
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -169,8 +156,7 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     end
                     if j < b
                         if cannyResult(temp, j+1) < 200
-                            if grady(temp, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
+                            if grady(temp, j+1) >= 0
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -181,8 +167,7 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     end
                     if temp > 1 && j > 1
                         if cannyResult(temp-1, j-1) < 200
-                            if grady(temp-1, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
+                            if grady(temp-1, j-1) >= 0
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -193,8 +178,7 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     end
                     if temp < a && j < b
                         if cannyResult(temp+1, j+1) < 200
-                            if grady(temp+1, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
+                            if grady(temp+1, j+1) >= 0
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -205,8 +189,7 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     end
                     if temp > 1 && j < b
                         if cannyResult(temp-1, j+1) < 200
-                            if grady(temp-1, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
+                            if grady(temp-1, j+1) >= 0
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -217,8 +200,7 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     end
                     if temp < a && j > 1
                         if cannyResult(temp+1, j-1) < 200
-                            if grady(temp+1, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
+                            if grady(temp+1, j-1) >= 0
                                 width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
@@ -244,7 +226,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
  %                    if alpha < pi/3
                        if alpha < pi/2
-                           paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                            width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
@@ -256,7 +237,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -269,7 +249,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -282,7 +261,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -295,7 +273,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -308,7 +285,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -321,7 +297,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -334,7 +309,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -347,7 +321,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -369,7 +342,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
  %                    if alpha < pi/3
                        if alpha < pi/2
-                           paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                            width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
@@ -381,7 +353,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -394,7 +365,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -407,7 +377,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -420,7 +389,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -433,7 +401,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -446,7 +413,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -459,7 +425,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -472,7 +437,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -485,7 +449,7 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
             end
         end
 %%
-    else %if grady(i, j) == 0 %grady == 0
+    else 
         if abs(grady(i, j)) < 10 %we treat it as grady == 0
             if gradx(i, j) > 0 && j ~= b
                 for temp = (j + 1) : 1 : b
@@ -493,118 +457,109 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                     stack{top} = [i, temp];
                     if cannyResult(i, temp) < 200
                         if gradx(i, temp) <= 0
-                            paper=BresenhamDraw(paper,j,i,temp,i);
                             width = temp - j;
                             top = top + 1;
                             stack{top} = [i, temp];
                             flag = 1;
                             break;
                         end
+                    end
                     if temp > 1
-                        if cannyResult(temp-1, j) < 200
-                            if grady(temp-1, j) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                        if cannyResult(i, temp-1) < 200
+                            if grady(i, temp-1) <= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if j > 1
-                        if cannyResult(temp, j-1) < 200
-                            if grady(temp, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if i > 1
+                        if cannyResult(i-1, temp) < 200
+                            if grady(i-1, temp) <= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if temp < a
-                        if cannyResult(temp+1, j) < 200
-                            if grady(temp+1, j) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if temp < b
+                        if cannyResult(i, temp+1) < 200
+                            if grady(i, temp+1) <= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if j < b
-                        if cannyResult(temp, j+1) < 200
-                            if grady(temp, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if i < a
+                        if cannyResult(i+1, temp) < 200
+                            if grady(i+1, temp) <= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if temp > 1 && j > 1
-                        if cannyResult(temp-1, j-1) < 200
-                            if grady(temp-1, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if temp > 1 && i > 1
+                        if cannyResult(i-1, temp-1) < 200
+                            if grady(i-1, temp-1) <= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if temp < a && j < b
-                        if cannyResult(temp+1, j+1) < 200
-                            if grady(temp+1, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if i < a && temp < b
+                        if cannyResult(i+1, temp+1) < 200
+                            if grady(i+1, temp+1) <= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if temp > 1 && j < b
-                        if cannyResult(temp-1, j+1) < 200
-                            if grady(temp-1, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if temp > 1 && i < a
+                        if cannyResult(i+1, temp-1) < 200
+                            if grady(i+1, temp-1) <= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if temp < a && j > 1
-                        if cannyResult(temp+1, j-1) < 200
-                            if grady(temp+1, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if temp < b && i > 1
+                        if cannyResult(i-1, temp+1) < 200
+                            if grady(i-1, temp+1) <= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
-                    end
                     end
                 end
             elseif gradx(i, j) < 0 && j ~= 1
                 for temp = (j - 1) : -1 : 1 
                     top = top + 1;
                     stack{top} = [i, temp];
+                    
                     if cannyResult(i, temp) < 200
                         if grady(i, temp) >= 0
-                            paper=BresenhamDraw(paper,j,i,temp,i);
                             width = j - temp;
                             top = top + 1;
                             stack{top} = [i, temp];
@@ -613,96 +568,88 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                         end
                     end
                     if temp > 1
-                        if cannyResult(temp-1, j) < 200
-                            if grady(temp-1, j) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                        if cannyResult(i, temp-1) < 200
+                            if grady(i, temp-1) >= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if j > 1
-                        if cannyResult(temp, j-1) < 200
-                            if grady(temp, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if i > 1
+                        if cannyResult(i-1, temp) < 200
+                            if grady(i-1, temp) >= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if temp < a
-                        if cannyResult(temp+1, j) < 200
-                            if grady(temp+1, j) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if temp < b
+                        if cannyResult(i, temp+1) < 200
+                            if grady(i, temp+1) >= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if j < b
-                        if cannyResult(temp, j+1) < 200
-                            if grady(temp, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if i < a
+                        if cannyResult(i+1, temp) < 200
+                            if grady(i+1, temp) >= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if temp > 1 && j > 1
-                        if cannyResult(temp-1, j-1) < 200
-                            if grady(temp-1, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if temp > 1 && i > 1
+                        if cannyResult(i-1, temp-1) < 200
+                            if grady(i-1, temp-1) >= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if temp < a && j < b
-                        if cannyResult(temp+1, j+1) < 200
-                            if grady(temp+1, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if i < a && temp < b
+                        if cannyResult(i+1, temp+1) < 200
+                            if grady(i+1, temp+1) >= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if temp > 1 && j < b
-                        if cannyResult(temp-1, j+1) < 200
-                            if grady(temp-1, j+1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if temp > 1 && i < a
+                        if cannyResult(i+1, temp-1) < 200
+                            if grady(i+1, temp-1) >= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
                         end
                     end
-                    if temp < a && j > 1
-                        if cannyResult(temp+1, j-1) < 200
-                            if grady(temp+1, j-1) <= 0
-                                paper=BresenhamDraw(paper,j,i,j,temp);
-                                width = temp - i;
+                    if temp < b && i > 1
+                        if cannyResult(i-1, temp+1) < 200
+                            if grady(i-1, temp+1) >= 0
+                                width = j - temp;
                                 top = top + 1;
-                                stack{top} = [temp, j];
+                                stack{top} = [i, temp];
                                 flag = 1;
                                 break;
                             end
@@ -725,7 +672,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
  %                    if alpha < pi/3
                        if alpha < pi/2
-                           paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                            width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
@@ -737,7 +683,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -750,7 +695,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -763,7 +707,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -776,7 +719,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -789,7 +731,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -802,7 +743,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -815,7 +755,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -828,7 +767,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -850,7 +788,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
  %                    if alpha < pi/3
                        if alpha < pi/2
-                           paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                            width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
@@ -862,7 +799,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -875,7 +811,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -888,7 +823,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -901,7 +835,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -914,7 +847,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -927,7 +859,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -940,7 +871,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y+1, temp_x-1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
@@ -953,7 +883,6 @@ function [paper, width_img] = getWidth(paper, gradx, grady, i, j, a, b, cannyRes
                        if cannyResult(temp_y-1, temp_x+1) < 200
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               paper=BresenhamDraw(paper,j,i,temp_x,temp_y);
                                width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];

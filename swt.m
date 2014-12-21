@@ -6,10 +6,20 @@ img = imread('pic.JPG');
 % img = imread('abc.jpg'); % 读入图像
 % img = imresize(img, [391, 521]);
 img = rgb2gray(img); % 转化为灰色图像
-%cannyResult = edge(img, 'canny'); % 调用canny函数 
-cannyResult = imread('cannyResult.jpg');
+[a, b] = size(img);
+cannyResult = edge(img, 'canny'); % 调用canny函数 
+for i = 1:1:a
+    for j = 1:1:b
+        if cannyResult(i, j) == 1
+            cannyResult(i, j) = 0;
+        else
+            cannyResult(i, j) = 1;
+        end
+    end
+end
+% cannyResult = imread('cannyResult.jpg');
 % cannyResult = imread('abcCanny.jpg'); 
-cannyResult = rgb2gray(cannyResult);
+% cannyResult = rgb2gray(cannyResult);
 
 % thresh=[0.01,0.17]; 
 % sigma=2;%定义高斯参数    
@@ -42,7 +52,7 @@ block_img_2 = zeros(a, b, 3);
 %getWidth
 for i = 1 : 1 : a
     for j = 1 : 1 : b
-        if cannyResult(i, j) < 200 %找到boundary edge
+        if cannyResult(i, j) == 0 %找到boundary edge
             temp1(i, j) = 1;
             width_img_1 = getWidth(gradx, grady, i, j, a, b, cannyResult, width_img_1);
         end
@@ -50,7 +60,7 @@ for i = 1 : 1 : a
 end
 for i = 1 : 1 : a
     for j = 1 : 1 : b
-        if cannyResult(i, j) < 200
+        if cannyResult(i, j) == 0
             temp2(i, j) = 1;
             width_img_2 = getWidth(-gradx, -grady, i, j, a, b, cannyResult, width_img_2);
         end
@@ -60,15 +70,15 @@ end
 %adjustCorner
 for i = 1 : 1 : a
     for j = 1 : 1 : b
-        if cannyResult(i, j) < 200
-            [paper1, width_img_1] = adjustCorner(paper1, gradx, grady, i, j, a, b, cannyResult, width_img_1);
+        if cannyResult(i, j) == 0
+            width_img_1 = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_img_1);
         end
     end
 end
 for i = 1 : 1 : a
     for j = 1 : 1 : b
-        if cannyResult(i, j) < 200
-            [paper1, width_img_2] = adjustCorner(paper2, -gradx, -grady, i, j, a, b, cannyResult, width_img_2);
+        if cannyResult(i, j) == 0
+            width_img_2 = adjustCorner(-gradx, -grady, i, j, a, b, cannyResult, width_img_2);
         end
     end
 end
@@ -150,3 +160,5 @@ subplot(1, 2, 2);
 % imshow(grouping_img_2, []);
 imshow(img_copy_2,[]);
 title('img2');
+
+run('vl_setup');

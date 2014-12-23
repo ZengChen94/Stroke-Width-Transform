@@ -2,18 +2,17 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
     flag = 0;
     top = 1;
     stack{top} = [i, j];
-    width = 0;
     
     %%
     if abs(gradx(i, j)) >= abs(grady(i, j))
-        if abs(gradx(i, j)) < 10 %we treat it as gradx == 0
+        if gradx(i, j) == 0 || (grady(i, j) ~= 0 && abs(gradx(i, j)/grady(i, j))<0.2)
+%         if abs(gradx(i, j)) < 10 %we treat it as gradx == 0
             if grady(i, j) > 0 && i ~= a 
                 for temp = (i + 1) : 1 : a
                     top = top + 1;
                     stack{top} = [temp, j];
                     if cannyResult(temp, j) == 0
                         if grady(temp, j) <= 0
-                            width = temp - i;
                             top = top + 1;
                             stack{top} = [temp, j];
                             flag = 1;
@@ -23,7 +22,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1
                         if cannyResult(temp-1, j) == 0
                             if grady(temp-1, j) <= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -34,7 +32,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if j > 1
                         if cannyResult(temp, j-1) == 0
                             if grady(temp, j-1) <= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -45,7 +42,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp < a
                         if cannyResult(temp+1, j) == 0
                             if grady(temp+1, j) <= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -56,7 +52,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if j < b
                         if cannyResult(temp, j+1) == 0
                             if grady(temp, j+1) <= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -67,7 +62,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1 && j > 1
                         if cannyResult(temp-1, j-1) == 0
                             if grady(temp-1, j-1) <= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -78,7 +72,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp < a && j < b
                         if cannyResult(temp+1, j+1) == 0
                             if grady(temp+1, j+1) <= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -89,7 +82,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1 && j < b
                         if cannyResult(temp-1, j+1) == 0
                             if grady(temp-1, j+1) <= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -100,7 +92,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp < a && j > 1
                         if cannyResult(temp+1, j-1) == 0
                             if grady(temp+1, j-1) <= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -115,7 +106,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     stack{top} = [temp, j];
                     if cannyResult(temp, j) == 0
                         if grady(temp, j) >= 0
-                            width = i - temp;
                             top = top + 1;
                             stack{top} = [temp, j];
                             flag = 1;
@@ -125,7 +115,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1
                         if cannyResult(temp-1, j) == 0
                             if grady(temp-1, j) >= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -136,7 +125,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if j > 1
                         if cannyResult(temp, j-1) == 0
                             if grady(temp, j-1) >= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -147,7 +135,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp < a
                         if cannyResult(temp+1, j) == 0
                             if grady(temp+1, j) >= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -158,7 +145,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if j < b
                         if cannyResult(temp, j+1) == 0
                             if grady(temp, j+1) >= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -169,7 +155,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1 && j > 1
                         if cannyResult(temp-1, j-1) == 0
                             if grady(temp-1, j-1) >= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -180,7 +165,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp < a && j < b
                         if cannyResult(temp+1, j+1) == 0
                             if grady(temp+1, j+1) >= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -191,7 +175,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1 && j < b
                         if cannyResult(temp-1, j+1) == 0
                             if grady(temp-1, j+1) >= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -202,7 +185,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp < a && j > 1
                         if cannyResult(temp+1, j-1) == 0
                             if grady(temp+1, j-1) >= 0
-                                width = temp - i;
                                 top = top + 1;
                                 stack{top} = [temp, j];
                                 flag = 1;
@@ -213,7 +195,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                 end
             end
         end %%
-%         elseif gradx(i, j) ~= 0
         if gradx(i, j) ~= 0%%
             if gradx(i, j) > 0 && j ~= b
                for temp_x = (j + 1) : 1 : b
@@ -225,9 +206,7 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                    stack{top} = [temp_y, temp_x];
                    if cannyResult(temp_y, temp_x) == 0
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
- %                    if alpha < pi/3
                        if alpha < pi/2
-                           width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
                            flag = 1;
@@ -238,7 +217,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -250,7 +228,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -262,7 +239,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -274,7 +250,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -286,7 +261,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -298,7 +272,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -310,7 +283,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -322,7 +294,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -341,9 +312,7 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                    stack{top} = [temp_y, temp_x];
                    if cannyResult(temp_y, temp_x) == 0
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
- %                    if alpha < pi/3
                        if alpha < pi/2
-                           width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
                            flag = 1;
@@ -354,7 +323,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -366,7 +334,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -378,7 +345,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -390,7 +356,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -402,7 +367,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -414,7 +378,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -426,7 +389,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -438,7 +400,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -451,14 +412,14 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
         end
 %%
     else 
-        if abs(grady(i, j)) < 10 %we treat it as grady == 0
+        if gradx(i, j) == 0 || (grady(i, j) ~= 0 && abs(gradx(i, j)/grady(i, j))<0.2)
+%         if abs(grady(i, j)) < 10 %we treat it as grady == 0
             if gradx(i, j) > 0 && j ~= b
                 for temp = (j + 1) : 1 : b
                     top = top + 1;
                     stack{top} = [i, temp];
                     if cannyResult(i, temp) == 0
                         if gradx(i, temp) <= 0
-                            width = temp - j;
                             top = top + 1;
                             stack{top} = [i, temp];
                             flag = 1;
@@ -468,7 +429,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1
                         if cannyResult(i, temp-1) == 0
                             if grady(i, temp-1) <= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -479,7 +439,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if i > 1
                         if cannyResult(i-1, temp) == 0
                             if grady(i-1, temp) <= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -490,7 +449,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp < b
                         if cannyResult(i, temp+1) == 0
                             if grady(i, temp+1) <= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -501,7 +459,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if i < a
                         if cannyResult(i+1, temp) == 0
                             if grady(i+1, temp) <= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -512,7 +469,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1 && i > 1
                         if cannyResult(i-1, temp-1) == 0
                             if grady(i-1, temp-1) <= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -523,7 +479,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if i < a && temp < b
                         if cannyResult(i+1, temp+1) == 0
                             if grady(i+1, temp+1) <= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -534,7 +489,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1 && i < a
                         if cannyResult(i+1, temp-1) == 0
                             if grady(i+1, temp-1) <= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -545,7 +499,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp < b && i > 1
                         if cannyResult(i-1, temp+1) == 0
                             if grady(i-1, temp+1) <= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -561,7 +514,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     
                     if cannyResult(i, temp) == 0
                         if grady(i, temp) >= 0
-                            width = j - temp;
                             top = top + 1;
                             stack{top} = [i, temp];
                             flag = 1;
@@ -571,7 +523,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1
                         if cannyResult(i, temp-1) == 0
                             if grady(i, temp-1) >= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -582,7 +533,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if i > 1
                         if cannyResult(i-1, temp) == 0
                             if grady(i-1, temp) >= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -593,7 +543,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp < b
                         if cannyResult(i, temp+1) == 0
                             if grady(i, temp+1) >= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -604,7 +553,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if i < a
                         if cannyResult(i+1, temp) == 0
                             if grady(i+1, temp) >= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -615,7 +563,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1 && i > 1
                         if cannyResult(i-1, temp-1) == 0
                             if grady(i-1, temp-1) >= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -626,7 +573,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if i < a && temp < b
                         if cannyResult(i+1, temp+1) == 0
                             if grady(i+1, temp+1) >= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -637,7 +583,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp > 1 && i < a
                         if cannyResult(i+1, temp-1) == 0
                             if grady(i+1, temp-1) >= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -648,7 +593,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                     if temp < b && i > 1
                         if cannyResult(i-1, temp+1) == 0
                             if grady(i-1, temp+1) >= 0
-                                width = j - temp;
                                 top = top + 1;
                                 stack{top} = [i, temp];
                                 flag = 1;
@@ -671,9 +615,8 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                    stack{top} = [temp_y, temp_x];
                    if cannyResult(temp_y, temp_x) == 0
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
- %                    if alpha < pi/3
+ %                    if alpha < pi/2
                        if alpha < pi/2
-                           width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
                            flag = 1;
@@ -684,7 +627,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -696,7 +638,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -708,7 +649,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -720,7 +660,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -732,7 +671,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -744,7 +682,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -756,7 +693,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -768,7 +704,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -787,9 +722,7 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                    stack{top} = [temp_y, temp_x];
                    if cannyResult(temp_y, temp_x) == 0
                        alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x), gradx(temp_y, temp_x))) - pi);
- %                    if alpha < pi/3
                        if alpha < pi/2
-                           width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                            top = top + 1;
                            stack{top} = [temp_y, temp_x];
                            flag = 1;
@@ -800,7 +733,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x), gradx(temp_y-1, temp_x))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -812,7 +744,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x), gradx(temp_y+1, temp_x))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -824,7 +755,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x-1), gradx(temp_y, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -836,7 +766,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y, temp_x+1), gradx(temp_y, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -848,7 +777,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x-1), gradx(temp_y-1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -860,7 +788,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x+1), gradx(temp_y+1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -872,7 +799,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y+1, temp_x-1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y+1, temp_x-1), gradx(temp_y+1, temp_x-1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;
@@ -884,7 +810,6 @@ function width_img = adjustCorner(gradx, grady, i, j, a, b, cannyResult, width_i
                        if cannyResult(temp_y-1, temp_x+1) == 0
                            alpha = abs(abs(atan2(grady(i, j), gradx(i, j)) - atan2(grady(temp_y-1, temp_x+1), gradx(temp_y-1, temp_x+1))) - pi);
                            if alpha < pi/2
-                               width = sqrt((i-temp_y)^2+(j-temp_x)^2);
                                top = top + 1;
                                stack{top} = [temp_y, temp_x];
                                flag = 1;

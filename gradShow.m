@@ -5,7 +5,8 @@ function gradShow_img = gradShow(gradShow_img, gradx, grady, i, j, a, b)
 
     if abs(gradx(i, j)) >= abs(grady(i, j))
 %     if gradx(i, j) == 0 %gradx == 0
-         if abs(gradx(i, j)) < 10
+         if gradx(i, j) == 0
+%          if abs(gradx(i, j)) < 10
             if grady(i, j) > 0 && i ~= a 
                 for temp = (i + 1) : 1 : a
                     top = top + 1;
@@ -51,7 +52,8 @@ function gradShow_img = gradShow(gradShow_img, gradx, grady, i, j, a, b)
             end
          end
     else %gradx < grady
-        if abs(grady(i, j)) < 10
+        if grady(i, j) == 0
+%         if abs(grady(i, j)) < 10
             if grady(i, j) > 0 && i ~= a 
                 for temp = (i + 1) : 1 : a
                     top = top + 1;

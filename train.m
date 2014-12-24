@@ -2,7 +2,7 @@ clc; clear all;
 
 t = 0;
 for i = 100 : 328
-    img_filename = ['trainData/', int2str(i), '_GT.bmp'];
+    img_filename = ['trainData/', int2str(i), '.jpg'];
     image = imread(img_filename);
     gt_filename = ['trainData/', int2str(i), '_GT.txt'];
     fid = fopen(gt_filename, 'r');
@@ -56,34 +56,4 @@ end;
 words_inst = double(words_inst);
 model = svmtrain(words_label,words_inst);
 save('model.mat','model');
-% [predict_label, accuracy, dec_values] =svmpredict(heart_scale_label, heart_scale_inst, model); 
-
-
-
-
-% % Testing
-% num_test_images = 10; % Change to real number of test images
-% 
-% % Loop through the test set images
-% for i=1:num_test_images
-%     %Read in the image
-%     img_filename = [TestImgDir, '/img_', int2str(i), '.png'];
-%     image = imread(img_filename);
-%     
-%     % Apply your method
-%     %...
-%     % Here are some dummy resulting bounding boxes
-%     res = [10, 10, 100, 20; 10, 35, 150, 50]; %left, top, right, bottom
-%     
-%     % Create a results file for the image
-%     res_filename = [OutputDir, '/res_img_', int2str(i), '.txt'];
-%     fid = fopen(res_filename, 'w');
-%     if (fid == -1)
-%         disp('Error opening output file for writing');
-%         return;
-%     end;
-%     for j = 1:size(res,1)
-%         fprintf(fid,'%d, %d, %d, %d\r\n', res(j, 1), res(j, 2), res(j, 3), res(j, 4));
-%     end
-%     fclose(fid);     
-% end;
+% [predict_label, accuracy, dec_values] =svmpredict(words_label, words_inst, model); 
